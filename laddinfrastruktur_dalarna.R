@@ -156,18 +156,18 @@ laddstationer_punkt <- st_as_sf(laddstationer_punkt, coords = c("lon", "lat"),
 
 pal <-  mapviewPalette("mapviewSpectralColors")
 
-# mapview(laddstationer_punkt, zcol = "anslutningspunkter", legend = FALSE, col.regions = pal(15), cex = "anslutningspunkter")
+greys <- colorRampPalette(c("grey50", "grey87"))
+
+greens <- colorRampPalette(c("darkgreen", "green"))
+
+#oranges <- colorRampPalette(c("orange4", "orange3", "orange2", "orange1", "orange"))
 
 #Skapar kartan
 
+mapview(nvdb_dalarna, zcol = "vagnummer", color = greys, label = "vagnummer", lwd = 3, alpha = 0.5, legend = FALSE, homebutton = FALSE)+
+  mapview(laddstationer_punkt, zcol = "anslutningspunkter", legend = FALSE, col.regions = greens(15), cex = "anslutningspunkter", homebutton = FALSE)+
+  mapview(laddstationer_kom, alpha.regions = 0, label = "kommun", legend = FALSE, homebutton = FALSE)
 
-mapview(nvdb_dalarna, zcol = "vagnummer", label = "vagnummer", lwd = 5, alpha = 0.2, legend = FALSE)+
-  mapview(laddstationer_punkt, zcol = "anslutningspunkter", legend = FALSE, col.regions = pal(15), cex = "anslutningspunkter")+
-  mapview(laddstationer_kom, alpha.regions = 0, label = "kommun", legend = FALSE)
-  
-  
-
-#mapview(nvdb_dalarna, zcol = "vagnummer", label = "vagnummer", lwd = 3, alpha = 0.2, legend = FALSE)
 
 
 

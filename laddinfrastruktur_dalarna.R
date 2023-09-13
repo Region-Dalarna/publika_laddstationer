@@ -76,18 +76,21 @@ nvdb_sv <- st_read(sokvag_nvdb_sv)
 nvdb_dalarna <- nvdb_sv %>% 
   filter(Vagnummer_Lanstillhorighet == 20) %>%         #ändra länstillhörighet till ditt regionid
   select("id" = "id",                                  #och rename
-         "n_korfalt" = "Antal_korfalt2_Korfaltsantal", 
+         "antal korfalt" = "Antal_korfalt2_Korfaltsantal", 
          "barighet" = "Barighet_Barighetsklass",
          "vagklass" = "FunkVagklass_Klass", 
          "gatunamn" = "Gatunamn_Namn",
          "hastighet_f" = "Hastighetsgrans_HogstaTillatnaHastighet_F",
          "hastighet_b" = "Hastighetsgrans_HogstaTillatnaHastighet_B",
-         "farligt_gods" = "RekomVagFarligtGods_Rekommendation",
-         "ars_dygns_trafik" = "Trafik_ADT_fordon",
-         "vag_bredd" = "Vagbredd_Bredd", 
+         "Rekomenderad vag for farligt gods" = "RekomVagFarligtGods_Rekommendation",
+         "ars dygns trafik" = "Trafik_ADT_fordon",
+         "vag bredd" = "Vagbredd_Bredd", 
          "vaghallare" = "Vaghallare_Vaghallartyp", 
          "vagnr_europavag" = "Vagnummer_Europavag",
-         "vagnummer" = "Vagnummer_Huvudnummer_Vard")
+         "vagnummer" = "Vagnummer_Huvudnummer_Vard") 
+
+nvdb_dalarna <- nvdb_dalarna %>% 
+  mutate(vagnr_europavag = replace(vagnr_europavag, vagnr_europavag == -1, "E"))
 
 # är det möjligt att gruppera på vägnr för att använda burst = vägnr?
 ##borde vara möjligt med QGIS-algoritm
@@ -164,13 +167,14 @@ greens <- colorRampPalette(c("darkgreen", "green"))
 
 #Skapar kartan
 
-mapview(nvdb_dalarna, zcol = "vagnummer", color = greys, label = "vagnummer", lwd = 3, alpha = 0.5, legend = FALSE, homebutton = FALSE)+
-  mapview(laddstationer_punkt, zcol = "anslutningspunkter", legend = FALSE, col.regions = greens(15), cex = "anslutningspunkter", homebutton = FALSE)+
-  mapview(laddstationer_kom, alpha.regions = 0, label = "kommun", legend = FALSE, homebutton = FALSE)
+mapview(nvdb_dalarna, zcol = "vagnummer", color = greys, label = "vagnummer", lwd = 3, alpha = 0.5, legend = FALSE, homebutton = FALSE, hide = TRUE, layer.name = "Stora vagar")+
+  mapview(laddstationer_punkt, zcol = "anslutningspunkter", legend = FALSE, col.regions = greens(15), cex = "anslutningspunkter", homebutton = FALSE, layer.name = "Publika laddstationer")+
+  mapview(laddstationer_kom, zcol = "kommun", alpha.regions = 0, legend = FALSE, hide = TRUE, layer.name = "Kommungranser", homebutton = FALSE)
 
 
-
-
+# layer.name = "Kommungranser"
+# homebutton = FALSE,
+# hide = TRUE,
 
 
 
